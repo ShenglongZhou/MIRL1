@@ -1,3 +1,4 @@
+
 function [x, Out] = MIRL1(A,b,opts)
 
 % A solver for reweighted L1-minimization model:
@@ -31,8 +32,9 @@ for iter=1:itermax
     w0 = w; 
     opts_yall1.pho     = mu; 
     opts_yall1.weights = w; 
-    opts_yall1.x0      = x0;
-    x  = yall1(A, b, opts_yall1);               % call yall1 solver to solve the weighted L1-minimization
+    opts_yall1.x0      = x0; 
+    % call yall1 solver to solve the weighted L1-minimization
+    x  = yall1(A, b, opts_yall1);              
     
     xx0=x-x0; 
     ErrorTol=sqrt(sum(xx0.*xx0))/max(sqrt(sum(x0.*x0)),1); 
@@ -46,17 +48,23 @@ for iter=1:itermax
         break;
     end                                         
      
-     sx = sort(abs(x),'descend');  eps2  = max(1e-3,sx(i0));  
-     k  = sparsity(sx);            theta = 1.005*theta;       % update the sparsity 
+     sx    = sort(abs(x),'descend');  
+     eps2  = max(1e-3,sx(i0));  
+     if  isfield(opts,'k'); 
+     k     = opts.k; 
+     else
+     k     = sparsity(sx);                            % update the sparsity   
+     end
+     theta = 1.005*theta;       
        
-     w  = ModWeight(x,abs(xx0),theta,k,eps2);                      % update the weight
+     w  = ModWeight(x,abs(xx0),theta,k,eps2);           % update the weight
      
      beta=sum(w0.*abs(x))/sum(w.*abs(x));
-     if beta>1; mu=a*mu; else mu=beta*mu; end                 % update the penalty parameter
+     if beta>1; mu=a*mu; else mu=beta*mu; end    % update penalty parameter
 
 end
 Out.iter=iter; Out.time=toc;
-%------------------Modifeid weights----------------------%
+%------------------Modifeid weights----------------------------------------
 function w = ModWeight(x,h,theta,k,eps2)
     
     [~,Index]=sort(h,'descend'); w=ones(n,1);      
@@ -68,7 +76,7 @@ function w = ModWeight(x,h,theta,k,eps2)
    end  
 end
 
-%------------------Update the Sparsity------------------%
+%------------------Update the Sparsity-------------------------------------
 function sp = sparsity(x)
     sumx=sum(x); y=0; sp=0;   
     while y<(rate*sumx)
