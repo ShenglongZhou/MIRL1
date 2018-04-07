@@ -19,7 +19,7 @@ for j=1:length(k0)
     rate  = 0;
     for p = 1:Sample        
     [A,b,x_opt ] = CSMatrix(problem, m,n,k0(j) ); 
-    opts.iter    = 1;
+    opts.IterOn  = 0;
     x            = MIRL1(A,b,opts);    
     if norm(x-x_opt)/norm(x)<1e-2; rate=rate+1;end 
     end       
