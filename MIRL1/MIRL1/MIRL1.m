@@ -2,20 +2,24 @@
 function [x, Out] = MIRL1(A,b,opts)
 
 % A solver for reweighted L1-minimization model:
-%
-%          min 0.5||Ax-b||^2 + mu||w.*x||_1
-%
+% min 0.5||Ax-b||^2 + mu||w.*x||_1
 % Written by 05/05/2015, Shenglong Zhou
 % yall1 solver is taken from http://yall1.blogs.rice.edu/
 
-% --- Input:
-%     A    --- an m x n matrix with m<n;
-%     b    --- an m-vector;
+% --- Inputs:
+%     A    --- an m x n order matrix with m<n;
+%     b    --- an m x 1  order vector;
 %     opts --- a structure with fields:
 %              opts.tol    -- tolerance for yall1 solver, default one: 1e-4;
 %              opts.rate   -- for updating the sparsity,  default one: 1/(log(n/m));
 %              opts.k      -- for the given sparsity;
 %              opts.IterOn -- display results in each iteration, default one: 1.
+% --- Outputs:
+%     x    --- recovered solution, an n x 1  order vector;
+%     Out ---  a structure with fields:
+%              Out.iter    -- number of total iterations;
+%              Out.time    -- total computational time.
+
 
 [m,n] = size(A);                  At    = A';
 x     = zeros(n,1);               w     = ones(n,1); 
