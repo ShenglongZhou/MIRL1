@@ -27,7 +27,7 @@ if isequal(b,[]); return; end
 fprintf('\n Problem name: '); disp(problem);
 fprintf(' Sample size:  n=%d, m=%d, k=%d.\n \n Start to run...',n,m,k);
 fprintf('\n ----------------------------------- \n');
-opts.iter = 1;
+opts.IterOn = 1;
 [x, Out]  = MIRL1(A,b,opts);
 
 % result output
