@@ -12,7 +12,7 @@ function [x, Out] = MIRL1(A,b,opts)
 %     opts --- a structure with fields:
 %              opts.tol    -- tolerance for yall1 solver, default one: 1e-4;
 %              opts.rate   -- for updating the sparsity,  default one: 1/(log(n/m));
-%              opts.k      -- for the given sparsity;
+%              opts.k      -- for the given sparsity  if it is known in advance;
 %              opts.IterOn -- display results in each iteration, default one: 1.
 % --- Outputs:
 %     x    --- recovered solution, an n x 1  order vector;
@@ -23,7 +23,7 @@ function [x, Out] = MIRL1(A,b,opts)
 
 [m,n] = size(A);                  At    = A';
 x     = zeros(n,1);               w     = ones(n,1); 
-mu    = .01*max(abs(At*b));       a     = 0.2; 
+mu    = 0.01*max(abs(At*b));      a     = 0.2; 
 i0    = floor(m/(4*log(n/m)));    IterOn=1;
 tol   = 1e-4;                     theta = mu*m/n/10;
 
@@ -52,7 +52,7 @@ for iter=1:itermax
     ErrorTol=sqrt(sum(xx0.*xx0))/max(sqrt(sum(x0.*x0)),1); 
     if IterOn; fprintf(' Iter:%2d   ErrorTol: %1.2e\n',iter,ErrorTol ); end
 
-    if ErrorTol<1e-2 | iter==itermax                           % refinement
+    if ErrorTol<1e-2 | iter==itermax                                % refinement
         T   = find(abs(x)>=1e-3);  B   = A(:,T);
         x = zeros(n,1);            x(T)= linsolve(B,b);             
         break;
@@ -66,11 +66,11 @@ for iter=1:itermax
      k     = sparsity(sx,rate);                            % update the sparsity   
      end
      theta = 1.005*theta;       
-       
-     w  = ModWeight(x,abs(xx0),theta,k,eps2);           % update the weight
+           
+     w     = ModWeight(x,abs(xx0),theta,k,eps2);             % update the weight
      
-     beta=sum(w0.*abs(x))/sum(w.*abs(x));
-     if beta>1; mu=a*mu; else; mu=beta*mu; end   % update penalty parameter
+     beta  = sum(w0.*abs(x))/sum(w.*abs(x));
+     if beta>1; mu=a*mu; else; mu=beta*mu; end        % update penalty parameter
 
 end
 Out.iter=iter; Out.time=toc;
