@@ -10,8 +10,8 @@ clc; clear all;close all;
 % Different data dimensions can be tested under same example.
 
 % Initialization 
+warning off
 addpath('MIRL1'); 
-
 %m =    64; n  = 4*m;    k =20;
 %m =   100; n  = 2000;   k = 10; % This is particularly for 'OverSamDCTMat';
 m = 1000; n  = 4*m;     k = floor(0.01*n);
