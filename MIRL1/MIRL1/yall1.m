@@ -253,7 +253,6 @@ end % main iterations
 % output
 Out.iter = iter;
 Out.mu = [mu_orig mu];
-Out.obj = [objp objd];
 Out.y = y; Out.z = z;
 
 if iter == maxit; Out.exit = 'Exit: maxiter'; end
