@@ -22,6 +22,11 @@ function [x, Out] = MIRL1(A,b,opts)
 %     Out ---  a structure with fields:
 %              Out.iter    -- number of total iterations;
 %              Out.time    -- total computational time.
+if nargin<2
+   error('Inputs are not enough')
+elseif nargin==2
+   opts=[];
+end
 
 [m,n]       = size(A);                 
 [Itmax,rate,tol,IterOn,mu,i0,theta]...
