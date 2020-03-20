@@ -85,7 +85,7 @@ if isfield(opts,'rate');    rate   = opts.rate;          end
 if isfield(opts,'tol');     tol    = opts.tol;    else;  tol    = 1e-4; end
 if isfield(opts,'IterOn');  IterOn = opts.IterOn; else;  IterOn = 1;    end 
 mu    = 0.01*max(abs(A'*b));     
-i0    = floor(m/(4*log(n/m))); 
+i0    = ceil(m/(4*log(n/m))); 
 theta = mu*m/n/10;
 
 end
