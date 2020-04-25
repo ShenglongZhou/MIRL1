@@ -22,7 +22,7 @@ problem  = proname{1};
 % generate the data (A, b, x_opt)
 fprintf('\n Start to generate data... ');
 fprintf('\n ---------------------------------- ');
-[A,b,x_opt ] =  CSMatrix(problem, m,n,k );
+[A,b,xopt] =  CSMatrix(problem, m,n,k );
 if isequal(b,[]); return; end
 
 % call MIRL1 solver to solve the problem
@@ -31,7 +31,8 @@ fprintf(' Sample size:  n=%d, m=%d, k=%d\n \n Start to run...',n,m,k);
 fprintf('\n ---------------------------------- \n');
 opts.IterOn = 1;
 [x, Out]  = MIRL1(A,b,opts);
-relerr    = norm(x-x_opt)/norm(x);
+relerr    = norm(x-xopt)/norm(x);
+clear A b xopt
 
 % result output
 fprintf('\n ---------------------------------- ');
