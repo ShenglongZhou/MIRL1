@@ -84,7 +84,7 @@ if log(n/m)<=1; rate=.7;    else;  rate  = 1/(log(n/m)); end
 if isfield(opts,'rate');    rate   = opts.rate;          end
 if isfield(opts,'tol');     tol    = opts.tol;    else;  tol    = 1e-4; end
 if isfield(opts,'IterOn');  IterOn = opts.IterOn; else;  IterOn = 1;    end 
-mu    = 0.01*max(abs(A'*b));     
+mu    = 0.01*max(abs(b'*A));  
 i0    = ceil(m/(4*log(n/m))); 
 theta = mu*m/n/10;
 
