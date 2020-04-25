@@ -1,51 +1,43 @@
 clc; clear all;close all;
 % This file aims at generating resutls of recovery error and CPU time. 
-% Gaussian and  Partial DCT type  measurement matrices, that will be tested.
-% proname{1} will generate the plots for Gaussian matrix
-% proname{2} will generate the plots Partial DCT matrix
-% k=floor(0.01*n), floor(0.05*n) or floor(0.08*n) will generate different
-% cases under same example.
+% Gaussian and  Partial DCT type measurement matrices, that will be tested.
+% pbnm{1} generates the plots for Gaussian matrix
+% pbnm{2} generates the plots for Partial DCT matrix
+% k=0.01*n, 0.05*n or 0.08*n generate different cases under same example.
 
 % Initialization
 addpath('MIRL1'); 
 n0      = 1000:1000:5000;  
-Smaple  = 10;               
-proname = {'GaussianMat','PartialDCTMat'}; 
-problem = proname{2};         % change here to test another type matrix
+Smpl    = 10;             
+test    = 1;     % test=1, 2
+rate    = 0.01;  % rate=0.01, 0.05, 0.08
+pbnm    = {'GaussianMat','PartialDCTMat'}; 
 result  = [];
 
 % Test exmaples
-for j=1:length(n0)                                                                                                                
+for j = 1:length(n0)                                                                                                                
     n     = n0(j); 
-    m     = floor(n/4); 
-    k     = floor(0.01*n);    % k=floor(0.05*n) or k=floor(0.08*n)
-    gapxx = 0;
-    gapAx = 0;
+    m     = ceil(n/4); 
+    k     = ceil(rate*n);    
+    dxx   = 0;
+    dAx   = 0;
     time  = 0;    
-    for i=1:Smaple            % test Sample=10 examples for each dimension
-    [A,b,x_opt ] = CSMatrix(problem, m,n,k );            
-    t0    = cputime; 
-    x     = MIRL1(A,b,[]); 
-    t     = cputime-t0;             
-    gapxx = gapxx + norm(x_opt-x,'fro') ;
-    gapAx = gapAx + norm(A*x-b,'fro');
-    time  = time    + t;
+    for i = 1:Smpl % Smpl=10 examples for each dimension
+    [A,b,xopt] = CSMatrix(pbnm{test},m,n,k );            
+    [x,out]    = MIRL1(A,b,[]);           
+    dxx        = dxx  + norm(xopt-x,'fro') ;
+    dAx        = dAx  + norm(A*x-b,'fro');
+    time       = time + out.time;
     end   
-    result=[result   [ gapxx; gapAx ; time ]/Smaple]
+    result     = [result [dxx;dAx;time]/Smpl]
 end
 
 % Graph design
-if k< floor(0.08*n) 
-for i=1:3
+figure
+ylab = {'||x-x_{opt}||','||\Phix-b||','Time'};
+for i= 1:3
     subplot(1,3,i)
-    plot(n0,result(i,:),'r*-');hold on
-    set(gca,'FontName','Times','FontSize',8)
-    if     i==1; ylabel('||x-x_{orig}||','FontSize',10 )
-    elseif i==2; ylabel('||\Phix-b||','FontSize',10) 
-    else         ylabel('Time','FontSize',10) 
-    end
-    xlabel('N','FontName','Times','FontSize',8)
+    plot(n0,result(i,:),'ro-'),   hold on    
+    ylabel(ylab{i}), xlabel('N'), grid on
     axis([min(n0) max(n0) 0 max(result(i,:))])
 end
-end
-
