@@ -20,9 +20,8 @@ switch problemname
         Sig   = zeros(n,n);
         for i = 1:n
         for j = 1:n; Sig(i,j) = (.5)^(abs(i-j));end
-        end
-        Sig   = real(Sig^(1/2));           
-        A     = randn(m,n)*Sig;
+        end         
+        A     = mvnrnd(zeros(n,1),Sig,m);;
         I0    = randperm(n); I=I0(1:k);           
     case 'OverSamDCTMat'
         F=10;
