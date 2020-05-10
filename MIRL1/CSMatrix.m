@@ -17,10 +17,8 @@ switch problemname
         end
         I0 = randperm(n); I=I0(1:k);        
     case 'ToeplitzCorMat'
-        Sig   = zeros(n,n);
-        for i = 1:n
-        for j = 1:n; Sig(i,j) = (.5)^(abs(i-j));end
-        end         
+        Sig   = zeros(n);
+        for i = 1:n; Sig(i,:) = (.5).^(abs(i-(1:n))); end    
         A     = mvnrnd(zeros(n,1),Sig,m);;
         I0    = randperm(n); I=I0(1:k);           
     case 'OverSamDCTMat'
