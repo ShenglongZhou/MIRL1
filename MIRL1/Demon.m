@@ -12,9 +12,9 @@ clc; clear all;close all;
 % Initialization 
 warning off
 addpath('MIRL1'); 
-%m =    64; n  = 4*m;    k =20;
-%m =   100; n  = 2000;   k = 10; % This is particularly for 'OverSamDCTMat';
-m = 1000; n  = 4*m;     k = floor(0.01*n);
+m = 1000; n = 4*m;  k = floor(0.01*n);
+%m = 100; n = 2000; k = 10; % This is particularly for 'OverSamDCTMat';
+
 
 proname  = {'GaussianMat','PartialDCTMat','ToeplitzCorMat','OverSamDCTMat'}; 
 problem  = proname{1};
@@ -30,8 +30,9 @@ fprintf('\n Problem name: '); disp(problem);
 fprintf(' Sample size:  n=%d, m=%d, k=%d\n \n Start to run...',n,m,k);
 fprintf('\n ---------------------------------- \n');
 opts.IterOn = 1;
-[x, Out]  = MIRL1(A,b,opts);
-relerr    = norm(x-xopt)/norm(x);
+%opts.k      = k;
+[x, Out]    = MIRL1(A,b,opts);
+relerr      = norm(x-xopt)/norm(x);
 clear A b xopt
 
 % result output
