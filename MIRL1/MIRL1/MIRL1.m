@@ -79,7 +79,7 @@ end
 %------------------Set Parameters----------------------------------------
 function [itmax,rate,tol,IterOn,mu,i0,theta] = Get_parameters(m,n,A,b,opts)
 
-if n<2000;      itmax=1000; else;  itmax = 100;          end
+if n<1000;      itmax=1000; else;  itmax = 100;          end
 if log(n/m)<=1; rate=.7;    else;  rate  = 1/(log(n/m)); end 
 if isfield(opts,'rate');    rate   = opts.rate;          end
 if isfield(opts,'tol');     tol    = opts.tol;    else;  tol    = 1e-4; end
