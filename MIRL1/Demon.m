@@ -10,23 +10,24 @@ clc; clear all;close all;
 % Different data dimensions can be tested under same example.
 
 % Initialization 
-warning off
-addpath('MIRL1'); 
-m = 1000; n = 4*m;  k = floor(0.01*n);
-%m = 100; n = 2000; k = 10; % This is particularly for 'OverSamDCTMat';
+warning off, addpath('MIRL1');
 
+test = 1;
+m    = 1000; n = 4*m;  k = floor(0.01*n);
+if test == 4  % This is particularly for 'OverSamDCTMat' 
+m    = 100;  n = 2000; k = 10; 
+end
 
 proname  = {'GaussianMat','PartialDCTMat','ToeplitzCorMat','OverSamDCTMat'}; 
-problem  = proname{1};
+problem  = proname{test};
 
 % generate the data (A, b, x_opt)
 fprintf('\n Start to generate data... ');
 fprintf('\n ---------------------------------- ');
-[A,b,xopt] =  CSMatrix(problem, m,n,k );
-if isequal(b,[]); return; end
+[A,b,xopt] = CSMatrix(problem,m,n,k); 
 
 % call MIRL1 solver to solve the problem
-fprintf('\n Problem name: '); disp(problem);
+fprintf('\n Problem name: %s\n',problem);  
 fprintf(' Sample size:  n=%d, m=%d, k=%d\n \n Start to run...',n,m,k);
 fprintf('\n ---------------------------------- \n');
 opts.IterOn = 1;
