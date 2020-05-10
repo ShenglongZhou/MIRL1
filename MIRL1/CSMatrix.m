@@ -38,7 +38,7 @@ switch problemname
         I     = sort(I);
         I     = I + (0:k-1)'*2*F;         
     otherwise
-        disp('input a problen name');        
+        disp('Please input a problem name !!!');        
 end
 
 x_opt    = zeros(n,1);  
