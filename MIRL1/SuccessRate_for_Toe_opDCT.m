@@ -15,32 +15,15 @@ pbnm = {'ToeplitzCorMat','OverSamDCTMat'};
 A    = zeros(m,n); 
 ScRt = [];  
 
-if isequal(pbnm{test},'ToeplitzCorMat')  % generate the Toeplitz Correlation matrix
-   Sig   = zeros(n,n);
-   for i = 1:n; Sig(i,:)=(0.5).^(abs(i-(1:n))); end
-   Sig   = real(Sig^(1/2));   
-end
-
 % Test examples
 for j = 1:length(k0) 
     rate  = 0; 
     k     = k0(j); 
     for p = 1:Smpl
-        switch pbnm{test}
-            case 'ToeplitzCorMat' % generate data for Toeplitz Correlation                  
-                A    = randn(m,n)*Sig;
-                I0   = randperm(n); 
-                I    = I0(1:k);
-                xopt = zeros(n,1);  
-                while nnz(xopt)~=k; xopt(I) = randn(k,1); end 
-                xopt = xopt + 0.01*sign(xopt); 
-                b    = A(:,I)*xopt(I); 
-            case 'OverSamDCTMat'  % generate data for Over Sampled Partial DCT 
-                [A,b,xopt ] =  CSMatrix(pbnm{test}, m,n,k ); 
-        end
+        [A,b,xopt ]  = CSMatrix(pbnm{test},m,n,k ); 
         opts.IterOn  = 0;
         x            = MIRL1(A,b,opts);    
-        rate         = rate+ (norm(x-xopt)/norm(x)<1e-2);
+        rate         = rate + (norm(x-xopt)/norm(x)<1e-2);
     end
     ScRt=[ScRt rate/Smpl]; clc; ScRt
 end
