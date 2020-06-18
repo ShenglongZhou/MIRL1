@@ -30,7 +30,7 @@ for j = 1:length(n0)
     dAx        = dAx  + norm(A*x-b,'fro');
     time       = time + out.time;
     end   
-    result     = [result [dxx;dAx;time]/Smpl]
+    result     = [result [dxx;dAx;time]/Smpl]; clc; result
 end
 
 % Graph design
