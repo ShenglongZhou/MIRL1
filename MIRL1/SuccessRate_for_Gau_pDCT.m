@@ -22,7 +22,7 @@ for j     = 1:length(k0)
         opts.IterOn = 0;
         x           = MIRL1(A,b,opts);    
         rate        = rate+( norm(x-x_opt)/norm(x)<1e-2 ); 
-        end       
+    end       
     ScRt        = [ScRt rate/Smpl]; clc; ScRt
 end
 
