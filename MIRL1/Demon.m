@@ -26,7 +26,7 @@ fprintf(' Generate data of %s...',problem);
 [A,b,xopt] = CSMatrix(problem,m,n,k); 
 
 % call MIRL1 solver 
-opts.k      = k;
+opts.IterOn = 1;
 [x, Out]    = MIRL1(A,b,opts);
 relerr      = norm(x-xopt)/norm(x);
  
