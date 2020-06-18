@@ -23,8 +23,9 @@ for j = 1:length(n0)
     dAx   = 0;
     time  = 0;    
     for i = 1:Smpl % Smpl=10 examples for each dimension
-    [A,b,xopt] = CSMatrix(pbnm{test},m,n,k );            
-    [x,out]    = MIRL1(A,b,[]);           
+    [A,b,xopt] = CSMatrix(pbnm{test},m,n,k ); 
+    opts.IterOn= 0;
+    [x,out]    = MIRL1(A,b,opts);           
     dxx        = dxx  + norm(xopt-x,'fro') ;
     dAx        = dAx  + norm(A*x-b,'fro');
     time       = time + out.time;
