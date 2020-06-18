@@ -22,7 +22,6 @@ for j = 1:length(k0)
     for p = 1:Smpl
         [A,b,xopt ]  = CSMatrix(pbnm{test},m,n,k ); 
         opts.IterOn  = 0;
-        opts.k       = k;
         x            = MIRL1(A,b,opts);    
         rate         = rate + (norm(x-xopt)/norm(x)<1e-2);
     end
