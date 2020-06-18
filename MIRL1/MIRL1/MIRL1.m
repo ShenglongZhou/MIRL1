@@ -36,6 +36,12 @@ w           = ones(n,1);
 opts_ya.tol = tol;
 t_start     = tic;
 
+if  IterOn
+    fprintf('\n Start to run the solver MIRL1... \n');
+    fprintf(' Iter        Error       CPU Time \n');
+    fprintf(' ---------------------------------- \n');
+end
+
 for iter=1:Itmax
         
     x0 = x; 
@@ -48,7 +54,10 @@ for iter=1:Itmax
     x     = yall1(A, b, opts_ya);                  
     dx    = x-x0; 
     Error = sqrt(sum(dx.*dx))/max(sqrt(sum(x0.*x0)),1); 
-    if IterOn; fprintf(' Iter:%3d     Error: %1.2e\n',iter,Error ); end
+    if IterOn  
+       fprintf(' %3d       %1.2e      %5.3fsec\n',...
+                  iter, Error,toc(t_start) ); 
+    end
 
     if Error<1e-2 | iter==Itmax                                % refinement
         T        = find(abs(x)>=1e-3);  
@@ -56,7 +65,11 @@ for iter=1:Itmax
         x        = zeros(n,1);            
         x(T)     = linsolve(B,b);
         Out.iter = iter; 
+        Out.obj  = norm(B*x(T)-b);
         Out.time = toc(t_start);
+        if  IterOn
+        fprintf(' ---------------------------------- \n');
+        end
         return;
     end    
     
@@ -75,7 +88,10 @@ for iter=1:Itmax
     end        
 
 end
+
 end
+
+
 %------------------Set Parameters----------------------------------------
 function [itmax,rate,tol,IterOn,mu,i0,theta] = Get_parameters(m,n,A,b,opts)
 
